@@ -58,3 +58,46 @@ for(i in 1:length(lis)){
 write.table(mat2, file = 'Mod-matrix-counts.tsv', sep='	')
 
 
+
+
+
+
+# q-value calculation
+library(qvalue)
+
+PCAq_sel <- read_csv("Analysis/HPLMoral/PCAq_sel.csv")
+hist(PCAq_sel$`p-value`)
+
+qval <- qvalue(PCAq_sel$`p-value`, pi0 = 1)
+summary(qval)
+hist(qval$qvalues)
+
+mat <- data.frame(qval$pvalues, qval$qvalues, qval$lfdr)
+write.table(mat, "qval.csv", sep = ",", row.names = FALSE)
+
+
+
+
+
+
+# PCA
+library(ggplot2)
+library(stats)
+library(reshape2)
+
+data <- mat2
+pca_result <- prcomp(t(data[,c(2:7)]), scale = TRUE)
+pc_scores <- as.data.frame(pca_result$x)
+pc_data <- data.frame(SampleID = colnames(data[,c(2:7)]), pc_scores)
+
+
+ggplot(pc_data, aes(x = PC1, y = PC2, color = SampleID)) +
+  geom_point(size = 3) +
+  xlab(paste("PC1 (", round(pca_result$sdev[1] / sum(pca_result$sdev) * 100, 2), "%)")) +
+  ylab(paste("PC2 (", round(pca_result$sdev[2] / sum(pca_result$sdev) * 100, 2), "%)")) +
+  ggtitle("PCA Analysis") +
+  theme_classic()
+
+
+
+
