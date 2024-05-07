@@ -24,3 +24,7 @@ GSE256193
 https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE256193
 
 
+## Data sharing
+Figshare
+https://figshare.com/projects/Oral_squamous_carcinoma_with_human_plasma-like_medium_culture/203958
+
